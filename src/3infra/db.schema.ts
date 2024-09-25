@@ -1,4 +1,4 @@
-import { UsuarioSchema } from './usuario-schema';
+import { UsuarioSchema } from './usuario.schema';
 
 interface DBSchema {
     users: UsuarioSchema[]

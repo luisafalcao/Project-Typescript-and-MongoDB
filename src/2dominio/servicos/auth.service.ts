@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from 'express';
-import UnauthorizedException from '../exceptions/unauthorized-exception';
+import UnauthorizedException from '../exceptions/unauthorized.exception';
 
 class AuthService {
   private checkToken (req: Request, res: Response, next: NextFunction): void {
