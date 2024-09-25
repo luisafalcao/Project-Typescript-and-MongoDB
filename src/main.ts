@@ -1,4 +1,4 @@
-import express, {  Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import routes from './4api/routes';
 import Logger from './3infra/middlewares/logger.middleware';
 import ErrorHandler from './3infra/middlewares/error-handler.middleware';
