@@ -23,14 +23,14 @@ class UsuarioService implements UsuarioServiceInterface {
     public async buscarTodos(): Promise<UsuarioSchema[]> {
         return await this.usuarioRepositorio.buscarTodos();
     }
-    public criar(usuario: CriarUsuarioDTO): void {
-        this.usuarioRepositorio.criar(usuario);
+    public async criar(usuario: CriarUsuarioDTO): Promise<void> {
+        await this.usuarioRepositorio.criar(usuario);
     }
-    public atualizar(id: number, usuario: AtualizarUsuarioDTO): void {
+    public async atualizar(id: string, usuario: AtualizarUsuarioDTO): Promise<void> {
         this.usuarioRepositorio.atualizar(id, usuario);
     }
-    public deletar(id: number): void {
-        this.usuarioRepositorio.deletar(id);
+    public async deletar(id: number): Promise<void> {
+        await this.usuarioRepositorio.deletar(id);
     }
 }
 

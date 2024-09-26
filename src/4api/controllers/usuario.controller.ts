@@ -19,20 +19,26 @@ class UsuarioController {
     this.router.get('/', this.buscarTodos.bind(this));
     this.router.get('/:id',
       [
-        param('id').isNumeric().withMessage('O id tem que ser um numero')
+        param('id').isNumeric().withMessage('O campo "Id" deve ser um número')
       ]
       , this.buscarPorId.bind(this));
     this.router.post('/',
       [
         body('nome')
-          .exists().withMessage('O campo nome é obrigatório')
-          .isString().withMessage('O campo nome tem que ser uma string'),
+          .exists().withMessage('O campo "Nome" é obrigatório')
+          .isString().withMessage('O campo "Nome" deve ser uma string'),
         body('ativo')
-          .exists().withMessage('O campo ativo é obrigatório')
-          .isBoolean().withMessage('O campo ativo tem que ser um boolean')
+          .exists().withMessage('O campo "Ativo" é obrigatório')
+          .isBoolean().withMessage('O campo "Ativo" deve ser um boolean')
       ],
       this.criar.bind(this));
-    this.router.patch('/:id', this.atualizar.bind(this));
+    this.router.patch('/:id',
+      [
+        body('id')
+          .exists().withMessage('O campo "Id" é obrigatório')
+          .isString().withMessage('O campo "Id" deve ser uma string')
+      ],
+      this.atualizar.bind(this));
     this.router.delete('/:id', this.deletar.bind(this));
   }
 
@@ -82,15 +88,15 @@ class UsuarioController {
   }
 
   async criar(req: Request, res: Response) {
-    const errosValidacao = await validationResult(req);
+    const errosValidacao = validationResult(req);
 
     if (!errosValidacao.isEmpty()) {
       return res.status(400).json({ erros: errosValidacao.array() });
     }
 
     const dadosUsuario: CriarUsuarioDTO = req.body;
-    this.usuarioService.criar(dadosUsuario);
-    const usuarios = this.usuarioService.buscarTodos();
+    await this.usuarioService.criar(dadosUsuario);
+    const usuarios = await this.usuarioService.buscarTodos();
     res.status(201).json(usuarios);
   }
 
@@ -98,14 +104,14 @@ class UsuarioController {
     const id = req.params.id;
     const dadosNovos: AtualizarUsuarioDTO = req.body;
 
-    await this.usuarioService.atualizar(+id, dadosNovos);
-    res.json('Usuario atualizado com sucesso!');
+    await this.usuarioService.atualizar(id, dadosNovos);
+    res.json('Usuário atualizado com sucesso!');
   }
 
   async deletar(req: Request, res: Response) {
     const id = req.params.id;
     await this.usuarioService.deletar(+id);
-    res.json('Usuario deletado com sucesso!');
+    res.json('Usuário deletado com sucesso!');
   }
 }
 

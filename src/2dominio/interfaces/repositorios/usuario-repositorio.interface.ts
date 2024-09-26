@@ -5,15 +5,13 @@ interface UsuarioRepositorioInterface {
 
   buscarTodos(): Promise<UsuarioSchema[]>;
 
-  buscaTodos(): UsuarioSchema[];
-
   buscaPorId(id: number): Promise<UsuarioSchema | null>;
 
-  criar(usuario: CriarUsuarioDTO): void;
+  criar(usuario: CriarUsuarioDTO): Promise<void>;
 
-  atualizar(id: number, dadosNovos: AtualizarUsuarioDTO): void;
+  atualizar(id: string, dadosNovos: AtualizarUsuarioDTO): Promise<void>;
 
-  deletar(id: number): void;
+  deletar(id: number): Promise<void>;
 }
 
 export default UsuarioRepositorioInterface;
