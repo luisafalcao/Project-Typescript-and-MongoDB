@@ -1,11 +1,14 @@
 import { NextFunction, Response, Request } from 'express';
 import UnauthorizedException from '../exceptions/unauthorized.exception';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 class AuthService {
-  private checkToken (req: Request, res: Response, next: NextFunction): void {
+  private checkToken(req: Request, res: Response, next: NextFunction): void {
     const apiKey = req.headers['api-key'];
     if (apiKey) {
-      if (apiKey === 'ChaveSuperSecreta') {
+      if (apiKey === process.env.API_KEY) {
         next();
         return;
       }
@@ -13,7 +16,7 @@ class AuthService {
     throw new UnauthorizedException();
   }
 
-  public static protect () {
+  public static protect() {
     const authService = new AuthService();
     return authService.checkToken.bind(authService);
   }

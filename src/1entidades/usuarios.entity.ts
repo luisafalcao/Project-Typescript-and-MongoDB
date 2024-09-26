@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
-export class UsuarioModel {
+export class UsuarioEntity {
   id: number;
   nome: string;
   ativo: boolean;
 
-  constructor (
+  constructor(
     id: number,
     nome: string,
-    ativo: boolean
+    ativo: boolean,
   ) {
     this.id = id;
     this.nome = nome;

@@ -1,4 +1,4 @@
-import {UsarioSchema} from '../infra/usuarioSchema';
+import { UsuarioSchema } from '../infra/usuarioSchema';
 import UsuarioRepositorio from '../infra/usuarioRepositorio';
 import UsuarioService from '../usuario-service';
 
@@ -6,7 +6,7 @@ jest.mock('../infra/usuarioRepositorio');
 
 describe('UsuarioService', () => {
     let usuarioRepositorio: jest.Mocked<UsuarioRepositorio>;
-    let usuarioService : UsuarioService;
+    let usuarioService: UsuarioService;
 
     beforeEach(() => {
         usuarioRepositorio = new UsuarioRepositorio() as jest.Mocked<UsuarioRepositorio>;
@@ -17,9 +17,9 @@ describe('UsuarioService', () => {
         jest.clearAllMocks();
     })
 
-    describe('buscarPorId',() => {
+    describe('buscarPorId', () => {
         it('deve retornar o usuario correspondente ao ID fornecido', () => {
-            const mockUsuario: UsarioSchema = { id: 1, nome: 'Usuario Falso', ativo: true };
+            const mockUsuario: UsuarioSchema = { id: 1, nome: 'Usuario Falso', ativo: true };
 
             usuarioRepositorio.buscaPorId.mockReturnValue(mockUsuario);
 
@@ -31,7 +31,7 @@ describe('UsuarioService', () => {
 
         });
 
-        it('deve retornar um erro se o usuário não for encontrado', () =>{
+        it('deve retornar um erro se o usuário não for encontrado', () => {
             usuarioRepositorio.buscaPorId.mockReturnValue(undefined);
 
             expect(() => usuarioService.buscarId(999)).toThrow('Usuario não encontrado.');

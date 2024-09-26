@@ -7,9 +7,9 @@ interface UsuarioRepositorioInterface {
 
   buscaTodos(): UsuarioSchema[];
 
-  buscaPorId(id: number): UsuarioSchema | undefined;
+  buscaPorId(id: number): Promise<UsuarioSchema | null>;
 
-  criar(usario: CriarUsuarioDTO): void;
+  criar(usuario: CriarUsuarioDTO): void;
 
   atualizar(id: number, dadosNovos: AtualizarUsuarioDTO): void;
 

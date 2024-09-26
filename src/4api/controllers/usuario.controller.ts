@@ -9,13 +9,13 @@ class UsuarioController {
   private readonly usuarioService: UsuarioServiceInterface;
   public readonly router: Router = Router();
 
-  constructor (@inject('UsuarioService') usuarioService: UsuarioServiceInterface,
+  constructor(@inject('UsuarioService') usuarioService: UsuarioServiceInterface,
   ) {
     this.usuarioService = usuarioService;
     this.routes();
   }
 
-  routes () {
+  routes() {
     this.router.get('/', this.buscarTodos.bind(this));
     this.router.get('/:id',
       [
@@ -36,40 +36,40 @@ class UsuarioController {
     this.router.delete('/:id', this.deletar.bind(this));
   }
 
-   /**
-     * @swagger
-     * /usuarios:
-     *   get:
-     *     summary: Retorna todos os usuários + qualquer informação extra
-     *     tags:
-     *       - usuarios
-     *     responses:
-     *       200:
-     *         description: Lista de usuários
-     *         content:
-     *           application/json:
-     *             schema:
-     *               type: array
-     *               items:
-     *                 type: object
-     *                 properties:
-     *                   id:
-     *                     type: string
-     *                     example: 1
-     *                   nome:
-     *                     type: string
-     *                     example: João da Silva
-     *       401:
-     *         description: Não autorizado
-     *       500:
-     *         description: Erro Interno
-     */
-  buscarTodos (req: Request, res: Response) {
-    const usarios = this.usuarioService.buscarTodos();
-    res.json(usarios);
+  /**
+    * @swagger
+    * /usuarios:
+    *   get:
+    *     summary: Retorna todos os usuários + qualquer informação extra
+    *     tags:
+    *       - usuarios
+    *     responses:
+    *       200:
+    *         description: Lista de usuários
+    *         content:
+    *           application/json:
+    *             schema:
+    *               type: array
+    *               items:
+    *                 type: object
+    *                 properties:
+    *                   id:
+    *                     type: string
+    *                     example: 1
+    *                   nome:
+    *                     type: string
+    *                     example: João da Silva
+    *       401:
+    *         description: Não autorizado
+    *       500:
+    *         description: Erro Interno
+    */
+  async buscarTodos(req: Request, res: Response): Promise<void> {
+    const usuarios = await this.usuarioService.buscarTodos();
+    res.json(usuarios);
   }
 
-  buscarPorId (req: Request, res: Response) {
+  async buscarPorId(req: Request, res: Response) {
     const errosValidacao = validationResult(req);
 
     if (!errosValidacao.isEmpty()) {
@@ -77,12 +77,12 @@ class UsuarioController {
     }
 
     const id = req.params.id ?? 1;
-    const usuario = this.usuarioService.buscarPorId(+id);
+    const usuario = await this.usuarioService.buscarPorId(+id);
     res.json(usuario);
   }
 
-  criar (req: Request, res: Response) {
-    const errosValidacao = validationResult(req);
+  async criar(req: Request, res: Response) {
+    const errosValidacao = await validationResult(req);
 
     if (!errosValidacao.isEmpty()) {
       return res.status(400).json({ erros: errosValidacao.array() });
@@ -94,17 +94,17 @@ class UsuarioController {
     res.status(201).json(usuarios);
   }
 
-  atualizar (req: Request, res: Response) {
+  async atualizar(req: Request, res: Response) {
     const id = req.params.id;
     const dadosNovos: AtualizarUsuarioDTO = req.body;
 
-    this.usuarioService.atualizar(+id, dadosNovos);
+    await this.usuarioService.atualizar(+id, dadosNovos);
     res.json('Usuario atualizado com sucesso!');
   }
 
-  deletar (req: Request, res: Response) {
+  async deletar(req: Request, res: Response) {
     const id = req.params.id;
-    this.usuarioService.deletar(+id);
+    await this.usuarioService.deletar(+id);
     res.json('Usuario deletado com sucesso!');
   }
 }

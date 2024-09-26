@@ -3,17 +3,17 @@ import fs from 'fs';
 import DBSchema from '../db.schema';
 import { UsuarioSchema as UsuarioSchema } from '../usuario.schema';
 import { AtualizarUsuarioDTO, CriarUsuarioDTO } from '../../2dominio/dtos/usuario.dto';
-import { UsuarioModel } from '../../1entidades/usuarios.entity';
+import { UsuarioEntity } from '../../1entidades/usuarios.entity';
 import { injectable } from 'inversify';
 import UsuarioRepositorioInterface from '../../2dominio/interfaces/repositorios/usuario-repositorio.interface';
 import "reflect-metadata";
 import dotenv from 'dotenv';
-import { Collection, MongoClient, ServerApiVersion } from 'mongodb';
+import { Collection, MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
 import MongoDBException from '../../2dominio/exceptions/not-found.exception';
 
 dotenv.config();
 
-const mongoKey = process.env.MONGO_DB_KEY;
+// const mongoKey = process.env.MONGO_DB_KEY;
 
 @injectable()
 class UsuarioRepositorio implements UsuarioRepositorioInterface {
@@ -79,23 +79,37 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
     return bd.users;
   }
 
-  public buscaPorId(id: number): UsuarioSchema | undefined {
-    const bd = this.acessoBD();
-    const usuario = bd.users.find((usuario) => usuario.id === id);
-    return usuario;
+  public async buscaPorId(id: number): Promise<UsuarioSchema | null> {
+    const { collection, client } = await this.getCollection();
+    try {
+      const usuario = await collection.findOne({ id: id });
+      return usuario;
+    } finally {
+      client.close()
+    }
   }
 
-  public criar(usario: CriarUsuarioDTO) {
+  public async buscaPorIdMongo(id: string): Promise<UsuarioSchema | null> {
+    const { collection, client } = await this.getCollection();
+    try {
+      const usuario = await collection.findOne({ _id: new ObjectId(id) });
+      return usuario;
+    } finally {
+      client.close()
+    }
+  }
+
+  public async criar(usuario: CriarUsuarioDTO) {
     const usuarios = this.buscaTodos();
 
-    const usarioMaiorId = usuarios.reduce(
-      (max, usario) => usario.id > max.id ? usario : max, usuarios[0]
+    const usuarioMaiorId = usuarios.reduce(
+      (max, usuario) => usuario.id > max.id ? usuario : max, usuarios[0]
     );
 
-    const novoUsuario = new UsuarioModel(
-      usarioMaiorId.id + 1,
-      usario.nome,
-      usario.ativo
+    const novoUsuario = new UsuarioEntity(
+      usuarioMaiorId.id + 1,
+      usuario.nome,
+      usuario.ativo,
     );
     usuarios.push(novoUsuario);
     this.reescreverUsuariosNoArquivo(usuarios);
