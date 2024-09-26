@@ -3,15 +3,17 @@ import { AtualizarUsuarioDTO, CriarUsuarioDTO } from "../../dtos/usuario.dto";
 
 interface UsuarioRepositorioInterface {
 
-  buscaTodos (): UsuarioSchema[];
+  buscarTodos(): Promise<UsuarioSchema[]>;
 
-  buscaPorId (id: number): UsuarioSchema | undefined;
+  buscaTodos(): UsuarioSchema[];
 
-  criar (usario: CriarUsuarioDTO): void;
+  buscaPorId(id: number): UsuarioSchema | undefined;
 
-  atualizar (id:number, dadosNovos: AtualizarUsuarioDTO): void;
+  criar(usario: CriarUsuarioDTO): void;
 
-  deletar (id: number): void;
+  atualizar(id: number, dadosNovos: AtualizarUsuarioDTO): void;
+
+  deletar(id: number): void;
 }
 
 export default UsuarioRepositorioInterface;

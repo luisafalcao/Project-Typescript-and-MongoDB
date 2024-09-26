@@ -6,11 +6,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerConfig from './3infra/swagger.options';
 import swaggerUi from 'swagger-ui-express';
 import AuthService from './2dominio/servicos/auth.service';
-import dotenv from 'dotenv';
 
-dotenv.config();
-
-console.log('aqui', process.env.MONGO_DB_KEY);
 const app = express();
 const port = 3000;
 const swaggerOptions = swaggerJSDoc(swaggerConfig);

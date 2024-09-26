@@ -7,21 +7,51 @@ import { UsuarioModel } from '../../1entidades/usuarios.entity';
 import { injectable } from 'inversify';
 import UsuarioRepositorioInterface from '../../2dominio/interfaces/repositorios/usuario-repositorio.interface';
 import "reflect-metadata";
+import dotenv from 'dotenv';
+import { Collection, MongoClient, ServerApiVersion } from 'mongodb';
+import MongoDBException from '../../2dominio/exceptions/not-found.exception';
+
+dotenv.config();
+
+const mongoKey = process.env.MONGO_DB_KEY;
 
 @injectable()
 class UsuarioRepositorio implements UsuarioRepositorioInterface {
   private readonly caminhoArquivo: string;
+  private readonly mongoKey = process.env.MONGO_DB_KEY ?? '';
+  private readonly DBName = process.env.MONGO_DB_NAME ?? '';
+  private readonly collectionName = 'users';
 
-  constructor () {
+  constructor() {
     this.caminhoArquivo = path.join(__dirname, 'fakeDB.json');
   }
 
-  private acessoBD (): DBSchema {
+  private async getCollection(): Promise<{
+    collection: Collection<UsuarioSchema>,
+    client: MongoClient
+  }> {
+    const client = new MongoClient(this.mongoKey,
+      {
+        serverApi: {
+          version: ServerApiVersion.v1,
+          strict: true,
+          deprecationErrors: true
+        }
+      }
+    )
+    await client.connect();
+    const db = client.db(this.DBName)
+    const collection = db.collection<UsuarioSchema>(this.collectionName)
+
+    return { collection, client }
+  }
+
+  private acessoBD(): DBSchema {
     const bdPuro = fs.readFileSync(this.caminhoArquivo, 'utf-8');
     return JSON.parse(bdPuro);
   }
 
-  private reescreverUsuariosNoArquivo (usuarios: Array<UsuarioSchema>):boolean {
+  private reescreverUsuariosNoArquivo(usuarios: Array<UsuarioSchema>): boolean {
     const bd = this.acessoBD();
     bd.users = usuarios;
     try {
@@ -32,18 +62,30 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
     }
   }
 
-  public buscaTodos (): UsuarioSchema[] {
+  public async buscarTodos(): Promise<UsuarioSchema[]> {
+    const { collection, client } = await this.getCollection()
+    try {
+      const users = await collection.find({}).toArray()
+      return users;
+    } catch (e) {
+      throw new MongoDBException('Conexão ao MongoDB falhou.');
+    } finally {
+      client.close()
+    }
+  }
+
+  public buscaTodos(): UsuarioSchema[] {
     const bd = this.acessoBD();
     return bd.users;
   }
 
-  public buscaPorId (id: number): UsuarioSchema | undefined {
+  public buscaPorId(id: number): UsuarioSchema | undefined {
     const bd = this.acessoBD();
     const usuario = bd.users.find((usuario) => usuario.id === id);
     return usuario;
   }
 
-  public criar (usario: CriarUsuarioDTO) {
+  public criar(usario: CriarUsuarioDTO) {
     const usuarios = this.buscaTodos();
 
     const usarioMaiorId = usuarios.reduce(
@@ -59,7 +101,7 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
     this.reescreverUsuariosNoArquivo(usuarios);
   }
 
-  public atualizar (id:number, dadosNovos: AtualizarUsuarioDTO) {
+  public atualizar(id: number, dadosNovos: AtualizarUsuarioDTO) {
     const usuarios = this.buscaTodos();
     const posicaoUsuario = usuarios.findIndex(usuario => usuario.id === id);
     if (posicaoUsuario !== -1) {
@@ -73,7 +115,7 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
     }
   }
 
-  public deletar (id: number) {
+  public deletar(id: number) {
     const usuarios = this.buscaTodos();
     const posicaoUsuario = usuarios.findIndex(usuario => usuario.id === id);
     if (posicaoUsuario !== -1) {
