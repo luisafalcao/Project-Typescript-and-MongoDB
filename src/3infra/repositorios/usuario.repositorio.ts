@@ -7,6 +7,7 @@ import "reflect-metadata";
 import dotenv from 'dotenv';
 import { Collection, MongoClient, ObjectId, ServerApiVersion, WithId } from 'mongodb';
 import MongoDBException from '../../2dominio/exceptions/not-found.exception';
+import ContatoVO from '../../1entidades/vo/contato.vo';
 
 dotenv.config();
 
@@ -141,6 +142,7 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
         usuarioschema?.id ?? 0,
         usuarioschema?.nome ?? "",
         usuarioschema?.ativo ?? false,
+        {} as ContatoVO,
         usuarioschema?._id.toString() ?? ""
       )
       return usuario;
