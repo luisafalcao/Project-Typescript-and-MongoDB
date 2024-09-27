@@ -76,11 +76,12 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
     try {
       const usuarioMaiorId = await collection.find({}).sort({ id: -1 }).limit(1).toArray();
 
-      const novoUsuario = new UsuarioEntity(
-        usuarioMaiorId[0].id + 1,
-        usuario.nome,
-        usuario.ativo,
-      );
+      const novoUsuario: UsuarioSchema = {
+        _id: new ObjectId(),
+        id: usuarioMaiorId[0].id + 1,
+        nome: usuario.nome,
+        ativo: usuario.ativo,
+      };
 
       await collection.insertOne(novoUsuario);
     } finally {
@@ -100,6 +101,23 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
       }
 
       await collection.updateOne({ _id: new ObjectId(id) }, atualizacao)
+    } finally {
+      await client.close();
+    }
+  }
+
+  public async atualizarPeloIdNumber(id: number, dadosNovos: AtualizarUsuarioDTO): Promise<void> {
+    const { collection, client } = await this.getCollection();
+
+    try {
+      const atualizacao = {
+        $set: {
+          ...(dadosNovos.nome && { nome: dadosNovos.nome }),
+          ...(dadosNovos.ativo !== undefined && { ativo: dadosNovos.ativo }),
+        }
+      }
+
+      await collection.updateOne({ id }, atualizacao)
     } finally {
       await client.close();
     }

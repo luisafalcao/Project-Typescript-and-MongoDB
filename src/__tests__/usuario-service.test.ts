@@ -19,7 +19,7 @@ describe('UsuarioService', () => {
 
     describe('buscarPorId', () => {
         it('deve retornar o usuario correspondente ao ID fornecido', () => {
-            const mockUsuario: UsuarioSchema = { id: 1, nome: 'Usuario Falso', ativo: true };
+            const mockUsuario: UsuarioSchema = { id: 1, nome: 'Usuário Falso', ativo: true };
 
             usuarioRepositorio.buscaPorId.mockReturnValue(mockUsuario);
 
@@ -34,7 +34,7 @@ describe('UsuarioService', () => {
         it('deve retornar um erro se o usuário não for encontrado', () => {
             usuarioRepositorio.buscaPorId.mockReturnValue(undefined);
 
-            expect(() => usuarioService.buscarId(999)).toThrow('Usuario não encontrado.');
+            expect(() => usuarioService.buscarId(999)).toThrow('Usuário não encontrado.');
             expect(usuarioRepositorio.buscaPorId).toHaveBeenCalledWith(999);
 
         });

@@ -3,6 +3,7 @@ import { AtualizarUsuarioDTO, CriarUsuarioDTO } from '../../2dominio/dtos/usuari
 import { body, param, validationResult } from 'express-validator';
 import { inject, injectable } from 'inversify';
 import UsuarioServiceInterface from '../../2dominio/interfaces/servicos/usuario-servico.interface';
+import asyncHandler from '../utils/async-handler';
 
 @injectable()
 class UsuarioController {
@@ -16,12 +17,12 @@ class UsuarioController {
   }
 
   routes() {
-    this.router.get('/', this.buscarTodos.bind(this));
+    this.router.get('/', asyncHandler(this.buscarTodos.bind(this)));
     this.router.get('/:id',
       [
         param('id').isNumeric().withMessage('O campo "Id" deve ser um número')
-      ]
-      , this.buscarPorId.bind(this));
+      ],
+      asyncHandler(this.buscarPorId.bind(this)));
     this.router.post('/',
       [
         body('nome')
@@ -31,15 +32,15 @@ class UsuarioController {
           .exists().withMessage('O campo "Ativo" é obrigatório')
           .isBoolean().withMessage('O campo "Ativo" deve ser um boolean')
       ],
-      this.criar.bind(this));
+      asyncHandler(this.criar.bind(this)));
     this.router.patch('/:id',
       [
         body('id')
           .exists().withMessage('O campo "Id" é obrigatório')
           .isString().withMessage('O campo "Id" deve ser uma string')
       ],
-      this.atualizar.bind(this));
-    this.router.delete('/:id', this.deletar.bind(this));
+      asyncHandler(this.atualizar.bind(this)));
+    this.router.delete('/:id', asyncHandler(this.deletar.bind(this)));
   }
 
   /**

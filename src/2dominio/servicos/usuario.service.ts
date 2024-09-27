@@ -16,7 +16,7 @@ class UsuarioService implements UsuarioServiceInterface {
     async buscarPorId(id: number): Promise<UsuarioSchema> {
         const usuario = await this.usuarioRepositorio.buscaPorId(id);
         if (!usuario) {
-            throw new NotFoundException('Usuario não encontrado.');
+            throw new NotFoundException('Usuário não encontrado.');
         }
         return usuario;
     }
