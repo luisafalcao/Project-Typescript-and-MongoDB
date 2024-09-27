@@ -12,10 +12,8 @@ export type UsuarioSchemaDriver = {
 }
 
 // schema do mongoose
-const UsuarioSchema: Schema = new Schema({
+export const UsuarioSchema: Schema = new Schema({
     id: { type: Number, require: true, unique: true },
     nome: { type: String, require: true },
     ativo: { type: Boolean, default: false }
-})
-
-export const UserModel = mongoose.model<UsuarioEntity>('User', UsuarioSchema);
+});

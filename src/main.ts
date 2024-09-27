@@ -8,13 +8,13 @@ import swaggerUi from 'swagger-ui-express';
 import AuthService from './2dominio/servicos/auth.service';
 import rotaNaoEncontradaMiddleware from './3infra/middlewares/rota-nao-encontrada.middleware';
 import mongoose from 'mongoose';
-import { closeDatabaseConnection } from './3infra/database/mongoose.config';
+import { connectToDatabase } from './3infra/database/mongoose.config';
 
 const app = express();
 const port = 3000;
 const swaggerOptions = swaggerJSDoc(swaggerConfig);
 
-
+connectToDatabase()
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerOptions));
 
 app.use(express.json());

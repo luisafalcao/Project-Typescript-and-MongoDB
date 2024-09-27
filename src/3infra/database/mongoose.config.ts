@@ -9,7 +9,7 @@ export async function connectToDatabase(): Promise<void> {
         if (!CHAVEMONGO) {
             throw new Error("Chave do DB não encontrada")
         }
-        const connectOptions: ConnectOptions = { connectTimeoutMS: 5000, }
+        const connectOptions: ConnectOptions = { connectTimeoutMS: 5000 }
         await mongoose.connect(CHAVEMONGO, connectOptions)
         console.log("Conectado ao MongoDB")
     } catch (e) {
