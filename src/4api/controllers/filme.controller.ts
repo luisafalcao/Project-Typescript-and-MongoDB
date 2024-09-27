@@ -22,6 +22,8 @@ class FilmeController {
         body('titulo')
           .exists().withMessage('O campo "Título" é obrigatório')
           .isString().withMessage('O campo "Título" deve ser uma string'),
+        body('diretor')
+          .isString().withMessage('O campo "Diretor" deve ser uma string'),
       ],
       asyncHandler(this.criar.bind(this)));
     this.router.delete('/:id', asyncHandler(this.deletar.bind(this)));
