@@ -4,17 +4,14 @@ import { injectable } from 'inversify';
 import UsuarioRepositorioInterface from '../../2dominio/interfaces/repositorios/usuario-repositorio.interface';
 import "reflect-metadata";
 import dotenv from 'dotenv';
-import { connectToDatabase } from '../database/mongoose.config';
 import { UserModel } from '../usuario.schema';
+import { connectToDatabase } from '../database/mongoose.config';
 
 dotenv.config();
 
 @injectable()
 class UsuarioRepositorio implements UsuarioRepositorioInterface {
-
-  constructor() {
-    connectToDatabase()
-  }
+  constructor() { connectToDatabase() }
   async buscarTodos(): Promise<(UsuarioEntity | undefined)[]> {
     return await UserModel.find()
   }

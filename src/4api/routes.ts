@@ -4,7 +4,6 @@ import container from '../3infra/inversify.config';
 
 const routes = Router();
 
-
 const usuarioController = container.get<UsuarioController>('UsuarioController');
 
 routes.use('/usuarios', usuarioController.router);
