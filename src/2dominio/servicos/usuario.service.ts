@@ -23,8 +23,9 @@ class UsuarioService implements UsuarioServiceInterface {
     public async buscarTodos(): Promise<(UsuarioEntity | undefined)[]> {
         return await this.usuarioRepositorio.buscarTodos();
     }
-    public async criar(usuario: CriarUsuarioDTO): Promise<void> {
+    public async criar(usuario: CriarUsuarioDTO): Promise<(UsuarioEntity | undefined)[]> {
         await this.usuarioRepositorio.criar(usuario);
+        return this.buscarTodos()
     }
     public async atualizar(id: string, usuario: AtualizarUsuarioDTO): Promise<void> {
         await this.usuarioRepositorio.atualizar(id, usuario);

@@ -1,4 +1,4 @@
-import { UsuarioSchema as UsuarioSchema } from '../usuario.schema';
+import { UsuarioSchemaDriver as UsuarioSchema } from '../usuario.schema';
 import { AtualizarUsuarioDTO, CriarUsuarioDTO } from '../../2dominio/dtos/usuario.dto';
 import { UsuarioEntity } from '../../1entidades/usuarios.entity';
 import { injectable } from 'inversify';
@@ -124,10 +124,11 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
     }
   }
 
-  public async deletar(id: number): Promise<void> {
+  public async deletar(id: number): Promise<boolean> {
     const { collection, client } = await this.getCollection();
     try {
-      await collection.deleteOne({ id: id })
+      const resultado = await collection.deleteOne({ id: id })
+      return resultado.deletedCount > 0
     } finally {
       await client.close()
     }

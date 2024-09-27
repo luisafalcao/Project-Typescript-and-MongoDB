@@ -17,3 +17,12 @@ export async function connectToDatabase(): Promise<void> {
         process.exit(1)
     }
 }
+
+export async function closeDatabaseConnection(): Promise<void> {
+    try {
+        await mongoose.connection.close();
+        console.log("Conexão ao MongoDB encerrada")
+    } catch (e) {
+        console.error("Erro ao encerrar conexão ao MongoDB", e);
+    }
+}

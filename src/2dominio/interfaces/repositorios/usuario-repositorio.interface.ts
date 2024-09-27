@@ -11,7 +11,7 @@ interface UsuarioRepositorioInterface {
 
   atualizar(id: string, dadosNovos: AtualizarUsuarioDTO): Promise<void>;
 
-  deletar(id: number): Promise<void>;
+  deletar(id: number): Promise<boolean>;
 }
 
 export default UsuarioRepositorioInterface;

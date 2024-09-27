@@ -96,9 +96,8 @@ class UsuarioController {
     }
 
     const dadosUsuario: CriarUsuarioDTO = req.body;
-    await this.usuarioService.criar(dadosUsuario);
-    const usuarios = await this.usuarioService.buscarTodos();
-    res.status(201).json(usuarios);
+    const usuario = await this.usuarioService.criar(dadosUsuario);
+    res.status(201).json(usuario);
   }
 
   async atualizar(req: Request, res: Response) {

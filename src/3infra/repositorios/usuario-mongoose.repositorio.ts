@@ -26,13 +26,24 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
     return undefined
   }
   async criar(usuario: CriarUsuarioDTO): Promise<void> {
-    throw new Error('Method not implemented.');
+    const usuarioMaiorId = await UserModel.find().sort({ id: -1 }).limit(1);
+    const user = new UsuarioEntity(
+      (usuarioMaiorId[0].id + 1),
+      usuario.nome,
+      usuario.ativo
+    )
+
+    const userModel = new UserModel(user)
+    await userModel.save();
   }
+
   async atualizar(id: string, dadosNovos: AtualizarUsuarioDTO): Promise<void> {
-    throw new Error('Method not implemented.');
+    await UserModel.findOneAndUpdate({ _id: id }, dadosNovos, { new: true })
   }
-  async deletar(id: number): Promise<void> {
-    throw new Error('Method not implemented.');
+
+  async deletar(id: number): Promise<boolean> {
+    const resultado = await UserModel.deleteOne({ id })
+    return resultado.deletedCount > 0;
   }
 }
 

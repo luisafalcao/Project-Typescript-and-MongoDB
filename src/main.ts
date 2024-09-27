@@ -7,6 +7,8 @@ import swaggerConfig from './3infra/swagger.options';
 import swaggerUi from 'swagger-ui-express';
 import AuthService from './2dominio/servicos/auth.service';
 import rotaNaoEncontradaMiddleware from './3infra/middlewares/rota-nao-encontrada.middleware';
+import mongoose from 'mongoose';
+import { closeDatabaseConnection } from './3infra/database/mongoose.config';
 
 const app = express();
 const port = 3000;
@@ -21,6 +23,15 @@ app.use(AuthService.protect());
 app.use('/api', routes);
 app.use(rotaNaoEncontradaMiddleware)
 app.use(ErrorHandler.init());
+
+// gerenciando eventos de conexão
+mongoose.connection.on('disconnected', () => {
+  console.log("Desconectado do MongoDB")
+})
+
+mongoose.connection.on('error', (err) => {
+  console.log("Erro na conexão", err)
+})
 
 app.get('/', (req: Request, res: Response) => {
   res.json('Bem vindo. Esta é a sua primeira API');
