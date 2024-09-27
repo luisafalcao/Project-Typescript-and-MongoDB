@@ -1,5 +1,5 @@
 import { Container } from "inversify";
-import UsuarioRepositorio from "./repositorios/usuario.repositorio";
+import UsuarioRepositorio from "./repositorios/usuario-mongoose.repositorio";
 import UsuarioController from "../4api/controllers/usuario.controller";
 import "reflect-metadata";
 import UsuarioRepositorioInterface from "../2dominio/interfaces/repositorios/usuario-repositorio.interface";
