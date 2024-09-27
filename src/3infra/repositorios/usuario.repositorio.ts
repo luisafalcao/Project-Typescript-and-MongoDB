@@ -1,4 +1,4 @@
-import { UsuarioSchemaDriver as UsuarioSchema } from '../usuario.schema';
+import { UsuarioSchemaDriver as UsuarioSchema } from '../database/schemas/usuario.schema';
 import { AtualizarUsuarioDTO, CriarUsuarioDTO } from '../../2dominio/dtos/usuario.dto';
 import { UsuarioEntity } from '../../1entidades/usuarios.entity';
 import { injectable } from 'inversify';

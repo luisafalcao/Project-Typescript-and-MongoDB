@@ -1,4 +1,4 @@
-import { UsuarioSchemaDriver } from "../usuario.schema";
+import { UsuarioSchemaDriver } from "./schemas/usuario.schema";
 
 interface DBSchema {
     users: UsuarioSchemaDriver[]

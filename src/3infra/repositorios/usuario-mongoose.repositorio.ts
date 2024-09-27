@@ -32,7 +32,8 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
     const user = new UsuarioEntity(
       (usuarioMaiorId[0].id + 1),
       usuario.nome,
-      usuario.ativo
+      usuario.ativo,
+      usuario.contato
     )
 
     const userModel = new this.userModel(user)

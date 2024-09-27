@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
-import mongoose, { Schema } from "mongoose";
-import { UsuarioEntity } from "../1entidades/usuarios.entity";
+import { Schema } from "mongoose";
+import { ContatoSchema } from "./contato.schema";
 
 export type UsuarioSchemaDriver = {
     _id?: ObjectId;
@@ -15,5 +15,6 @@ export type UsuarioSchemaDriver = {
 export const UsuarioSchema: Schema = new Schema({
     id: { type: Number, require: true, unique: true },
     nome: { type: String, require: true },
-    ativo: { type: Boolean, default: false }
+    ativo: { type: Boolean, default: false },
+    contato: ContatoSchema,
 });

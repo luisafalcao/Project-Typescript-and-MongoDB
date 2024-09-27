@@ -1,7 +1,7 @@
 import { injectable } from "inversify";
 import mongoose from "mongoose";
 import { UsuarioEntity } from "../../1entidades/usuarios.entity";
-import { UsuarioSchema } from "../usuario.schema";
+import { UsuarioSchema } from "./schemas/usuario.schema";
 
 @injectable()
 class DBModel {
