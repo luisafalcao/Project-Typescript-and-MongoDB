@@ -1,8 +1,8 @@
-import { UsuarioSchema } from '../infra/usuarioSchema';
-import UsuarioRepositorio from '../infra/usuarioRepositorio';
-import UsuarioService from '../usuario-service';
+import UsuarioRepositorio from '../3infra/repositorios/usuario.repositorio';
+import UsuarioService from '../2dominio/servicos/usuario.service';
+import { UsuarioEntity } from '../1entidades/usuarios.entity';
 
-jest.mock('../infra/usuarioRepositorio');
+jest.mock('../3infra/repositorios/usuario.repositorio');
 
 describe('UsuarioService', () => {
     let usuarioRepositorio: jest.Mocked<UsuarioRepositorio>;
@@ -18,12 +18,12 @@ describe('UsuarioService', () => {
     })
 
     describe('buscarPorId', () => {
-        it('deve retornar o usuario correspondente ao ID fornecido', () => {
-            const mockUsuario: UsuarioSchema = { id: 1, nome: 'Usuário Falso', ativo: true };
+        it('deve retornar o usuario correspondente ao ID fornecido', async () => {
+            const mockUsuario: UsuarioEntity = { id: 1, nome: 'Usuário Falso', ativo: true };
 
-            usuarioRepositorio.buscaPorId.mockReturnValue(mockUsuario);
+            usuarioRepositorio.buscaPorId.mockResolvedValue(mockUsuario);
 
-            const usuario = usuarioService.buscarId(1);
+            const usuario = await usuarioService.buscarPorId(1);
 
             expect(usuarioRepositorio.buscaPorId).toHaveBeenCalledWith(1);
 
@@ -31,10 +31,10 @@ describe('UsuarioService', () => {
 
         });
 
-        it('deve retornar um erro se o usuário não for encontrado', () => {
-            usuarioRepositorio.buscaPorId.mockReturnValue(undefined);
+        it('deve retornar um erro se o usuário não for encontrado', async () => {
+            usuarioRepositorio.buscaPorId.mockResolvedValue(undefined);
 
-            expect(() => usuarioService.buscarId(999)).toThrow('Usuário não encontrado.');
+            await expect(() => usuarioService.buscarPorId(999)).rejects.toThrow('Usuário não encontrado.');
             expect(usuarioRepositorio.buscaPorId).toHaveBeenCalledWith(999);
 
         });

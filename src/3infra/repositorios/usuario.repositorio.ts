@@ -5,7 +5,7 @@ import { injectable } from 'inversify';
 import UsuarioRepositorioInterface from '../../2dominio/interfaces/repositorios/usuario-repositorio.interface';
 import "reflect-metadata";
 import dotenv from 'dotenv';
-import { Collection, MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
+import { Collection, MongoClient, ObjectId, ServerApiVersion, WithId } from 'mongodb';
 import MongoDBException from '../../2dominio/exceptions/not-found.exception';
 
 dotenv.config();
@@ -38,25 +38,26 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
     return { collection, client }
   }
 
-  public async buscarTodos(): Promise<UsuarioSchema[]> {
+  public async buscarTodos(): Promise<(UsuarioEntity | undefined)[]> {
     const { collection, client } = await this.getCollection()
     try {
       const users = await collection.find({}).toArray()
-      return users;
+      return users.map(usuarioSchema => this.schemaParser(usuarioSchema));
     } catch (e) {
       throw new MongoDBException('Conexão ao MongoDB falhou.');
     } finally {
-      client.close()
+      await client.close()
     }
   }
 
-  public async buscaPorId(id: number): Promise<UsuarioSchema | null> {
+  public async buscaPorId(id: number): Promise<UsuarioEntity | undefined> {
     const { collection, client } = await this.getCollection();
     try {
-      const usuario = await collection.findOne({ id: id });
-      return usuario;
+      const usuarioschema = await collection.findOne({ id: id });
+
+      return this.schemaParser(usuarioschema)
     } finally {
-      client.close()
+      await client.close()
     }
   }
 
@@ -130,6 +131,20 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
     } finally {
       await client.close()
     }
+  }
+
+  //convertendo do padrão do mongodb
+  private schemaParser(usuarioschema: WithId<UsuarioSchema> | null): UsuarioEntity | undefined {
+    if (usuarioschema) {
+      const usuario = new UsuarioEntity(
+        usuarioschema?.id ?? 0,
+        usuarioschema?.nome ?? "",
+        usuarioschema?.ativo ?? false,
+        usuarioschema?._id.toString() ?? ""
+      )
+      return usuario;
+    }
+    return undefined
   }
 }
 

@@ -6,6 +6,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerConfig from './3infra/swagger.options';
 import swaggerUi from 'swagger-ui-express';
 import AuthService from './2dominio/servicos/auth.service';
+import rotaNaoEncontradaMiddleware from './3infra/middlewares/rota-nao-encontrada.middleware';
 
 const app = express();
 const port = 3000;
@@ -18,6 +19,7 @@ app.use(express.json());
 app.use(Logger.init());
 app.use(AuthService.protect());
 app.use('/api', routes);
+app.use(rotaNaoEncontradaMiddleware)
 app.use(ErrorHandler.init());
 
 app.get('/', (req: Request, res: Response) => {

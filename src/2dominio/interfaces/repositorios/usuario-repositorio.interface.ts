@@ -1,11 +1,11 @@
-import { UsuarioSchema } from "../../../3infra/usuario.schema";
+import { UsuarioEntity } from "../../../1entidades/usuarios.entity";
 import { AtualizarUsuarioDTO, CriarUsuarioDTO } from "../../dtos/usuario.dto";
 
 interface UsuarioRepositorioInterface {
 
-  buscarTodos(): Promise<UsuarioSchema[]>;
+  buscarTodos(): Promise<(UsuarioEntity | undefined)[]>;
 
-  buscaPorId(id: number): Promise<UsuarioSchema | null>;
+  buscaPorId(id: number): Promise<UsuarioEntity | undefined>;
 
   criar(usuario: CriarUsuarioDTO): Promise<void>;
 
