@@ -6,7 +6,7 @@ export type UsuarioSchemaDriver = {
     _id?: ObjectId;
     id: number;
     nome: string;
-    ativo: boolean,
+    ativo?: boolean,
     horasAulas?: bigint,
     contato?: Record<string, unknown>
 }

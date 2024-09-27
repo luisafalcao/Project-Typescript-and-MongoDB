@@ -5,13 +5,13 @@ export class UsuarioEntity {
   _id?: string;
   id: number;
   nome: string;
-  ativo: boolean;
+  ativo?: boolean;
   contato?: ContatoVO
 
   constructor(
     id: number,
     nome: string,
-    ativo: boolean,
+    ativo?: boolean,
     contato?: ContatoVO,
     _id?: string,
   ) {

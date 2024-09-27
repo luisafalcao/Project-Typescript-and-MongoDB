@@ -27,10 +27,7 @@ class UsuarioController {
       [
         body('nome')
           .exists().withMessage('O campo "Nome" é obrigatório')
-          .isString().withMessage('O campo "Nome" deve ser uma string'),
-        body('ativo')
-          .exists().withMessage('O campo "Ativo" é obrigatório')
-          .isBoolean().withMessage('O campo "Ativo" deve ser um boolean')
+          .isString().withMessage('O campo "Nome" deve ser uma string')
       ],
       asyncHandler(this.criar.bind(this)));
     this.router.patch('/:id',
