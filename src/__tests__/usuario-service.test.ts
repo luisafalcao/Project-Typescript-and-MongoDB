@@ -21,21 +21,21 @@ describe('UsuarioService', () => {
         it('deve retornar o usuario correspondente ao ID fornecido', async () => {
             const mockUsuario: UsuarioEntity = { id: 1, nome: 'Usuário Falso', ativo: true };
 
-            usuarioRepositorio.buscaPorId.mockResolvedValue(mockUsuario);
+            usuarioRepositorio.buscarPorId.mockResolvedValue(mockUsuario);
 
             const usuario = await usuarioService.buscarPorId(1);
 
-            expect(usuarioRepositorio.buscaPorId).toHaveBeenCalledWith(1);
+            expect(usuarioRepositorio.buscarPorId).toHaveBeenCalledWith(1);
 
             expect(usuario).toEqual(mockUsuario);
 
         });
 
         it('deve retornar um erro se o usuário não for encontrado', async () => {
-            usuarioRepositorio.buscaPorId.mockResolvedValue(undefined);
+            usuarioRepositorio.buscarPorId.mockResolvedValue(undefined);
 
             await expect(() => usuarioService.buscarPorId(999)).rejects.toThrow('Usuário não encontrado.');
-            expect(usuarioRepositorio.buscaPorId).toHaveBeenCalledWith(999);
+            expect(usuarioRepositorio.buscarPorId).toHaveBeenCalledWith(999);
 
         });
     })

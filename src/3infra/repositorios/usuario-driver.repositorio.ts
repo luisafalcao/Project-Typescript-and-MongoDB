@@ -51,7 +51,7 @@
 //     }
 //   }
 
-//   public async buscaPorId(id: number): Promise<UsuarioEntity | undefined> {
+//   public async buscarPorId(id: number): Promise<UsuarioEntity | undefined> {
 //     const { collection, client } = await this.getCollection();
 //     try {
 //       const usuarioschema = await collection.findOne({ id: id });
@@ -62,7 +62,7 @@
 //     }
 //   }
 
-//   public async buscaPorIdMongo(id: string): Promise<UsuarioSchema | null> {
+//   public async buscarPorIdMongo(id: string): Promise<UsuarioSchema | null> {
 //     const { collection, client } = await this.getCollection();
 //     try {
 //       const usuario = await collection.findOne({ _id: new ObjectId(id) });

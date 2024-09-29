@@ -23,7 +23,7 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
     return await this.userModel.find()
   }
 
-  async buscaPorId(id: number): Promise<UsuarioEntity | undefined> {
+  async buscarPorId(id: number): Promise<UsuarioEntity | undefined> {
     const usuario = await this.userModel.findOne({ id })
     if (usuario) {
       return usuario
