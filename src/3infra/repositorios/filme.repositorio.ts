@@ -20,11 +20,6 @@ class FilmeRepositorio implements FilmeRepositorioInterface {
         return await this.filmeModel.find()
     }
 
-    // async criar(filme: FilmeEntity): Promise<(FilmeEntity)> {
-    //     const filmeModel = new this.filmeModel(filme)
-    //     return await filmeModel.save()
-    // }
-
     async criar(filme: CriarFilmeDTO): Promise<void> {
         const filmeMaiorId = await this.filmeModel.find().sort({ id: -1 }).limit(1);
         const film = new this.filmeModel({

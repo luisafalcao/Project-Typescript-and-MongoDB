@@ -1,6 +1,6 @@
-class ContatoVO {
+export class ContatoVO {
     constructor(
-        public email: string,
+        public email?: string,
         public telefone?: string,
         public website?: string
     ) { }

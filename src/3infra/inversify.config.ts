@@ -1,5 +1,5 @@
 import { Container } from "inversify";
-import UsuarioRepositorio from "./repositorios/usuario-mongoose.repositorio";
+import UsuarioRepositorio from "./repositorios/usuario.repositorio";
 import UsuarioController from "../4api/controllers/usuario.controller";
 import UsuarioRepositorioInterface from "../2dominio/interfaces/repositorios/usuario-repositorio.interface";
 import UsuarioService from "../2dominio/servicos/usuario.service";
