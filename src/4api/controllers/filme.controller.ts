@@ -70,13 +70,15 @@ class FilmeController {
     }
 
     const dadosFilme: CriarFilmeDTO = req.body;
+    console.log("dadosFilme: ", dadosFilme)
+
     const filme = await this.filmeService.criar(dadosFilme);
     res.status(201).json(filme);
   }
 
   async deletar(req: Request, res: Response) {
     const id = req.params.id;
-    await this.filmeService.deletar(id);
+    await this.filmeService.deletar(Number(id));
     res.json('Filme deletado com sucesso!');
   }
 }

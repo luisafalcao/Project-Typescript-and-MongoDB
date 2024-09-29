@@ -1,7 +1,6 @@
 import { inject, injectable } from "inversify";
-import { AtualizarFilmeDTO, CriarFilmeDTO } from "../dtos/filme.dto";
+import { CriarFilmeDTO } from "../dtos/filme.dto";
 import FilmeServiceInterface from "../interfaces/servicos/filme-servico.interface";
-import NotFoundException from "../exceptions/mongo-db.exception";
 import FilmeRepositorioInterface from "../interfaces/repositorios/filme-repositorio.interface";
 import FilmeEntity from "../../1entidades/filmes.entity";
 import "reflect-metadata";
@@ -15,11 +14,13 @@ class FilmeService implements FilmeServiceInterface {
     public async buscarTodos(): Promise<(FilmeEntity | undefined)[]> {
         return await this.filmeRepositorio.buscarTodos();
     }
+
     public async criar(filme: CriarFilmeDTO): Promise<(FilmeEntity | undefined)[]> {
         await this.filmeRepositorio.criar(filme);
         return this.buscarTodos()
     }
-    public async deletar(id: string): Promise<void> {
+
+    public async deletar(id: number): Promise<void> {
         return await this.filmeRepositorio.deletar(id);
     }
 }

@@ -3,8 +3,8 @@ import { AtualizarFilmeDTO, CriarFilmeDTO } from "../../dtos/filme.dto";
 
 interface FilmeServiceInterface {
     buscarTodos(): Promise<(FilmeEntity | undefined)[]>;
-    criar(usuario: CriarFilmeDTO): Promise<(FilmeEntity | undefined)[]>;
-    deletar(id: string): Promise<void>;
+    criar(filme: CriarFilmeDTO): Promise<(FilmeEntity | undefined)[]>;
+    deletar(id: number): Promise<void>;
 }
 
 export default FilmeServiceInterface;

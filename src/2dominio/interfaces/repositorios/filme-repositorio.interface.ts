@@ -3,8 +3,8 @@ import { CriarFilmeDTO } from "../../dtos/filme.dto";
 
 interface FilmeRepositorioInterface {
     buscarTodos(): Promise<(FilmeEntity | undefined)[]>
-    criar(filme: CriarFilmeDTO): Promise<(FilmeEntity)>
-    deletar(id: string): Promise<(void)>
+    criar(filme: CriarFilmeDTO): Promise<(void)>
+    deletar(id: number): Promise<(void)>
 }
 
 export default FilmeRepositorioInterface

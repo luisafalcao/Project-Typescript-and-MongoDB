@@ -1,12 +1,24 @@
 import { ObjectId } from "mongoose";
 
-class FilmeEntity {
+export class FilmeEntity {
+    id: number;
+    titulo: string;
+    elenco?: ObjectId[];
+    diretor?: string;
+
     constructor(
-        public titulo: string,
-        public elenco?: ObjectId[],
-        public diretor?: string,
-        public _id?: string
-    ) { }
+        id: number,
+        titulo: string,
+        elenco?: ObjectId[],
+        diretor?: string,
+    ) {
+        this.id = id;
+        this.titulo = titulo;
+        this.elenco = elenco;
+        this.diretor = diretor;
+    }
 }
+
+
 
 export default FilmeEntity

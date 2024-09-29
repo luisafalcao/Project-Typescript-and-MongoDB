@@ -4,6 +4,7 @@ import FilmeEntity from "../../1entidades/filmes.entity";
 import mongoose from "mongoose";
 import DBModel from "../database/db.model";
 import NotFoundException from "../../2dominio/exceptions/mongo-db.exception";
+import { CriarFilmeDTO } from "../../2dominio/dtos/filme.dto";
 
 @injectable()
 class FilmeRepositorio implements FilmeRepositorioInterface {
@@ -19,13 +20,28 @@ class FilmeRepositorio implements FilmeRepositorioInterface {
         return await this.filmeModel.find()
     }
 
-    async criar(filme: FilmeEntity): Promise<(FilmeEntity)> {
-        const filmeModel = new this.filmeModel(filme)
-        return await filmeModel.save()
+    // async criar(filme: FilmeEntity): Promise<(FilmeEntity)> {
+    //     const filmeModel = new this.filmeModel(filme)
+    //     return await filmeModel.save()
+    // }
+
+    async criar(filme: CriarFilmeDTO): Promise<void> {
+        const filmeMaiorId = await this.filmeModel.find().sort({ id: -1 }).limit(1);
+        const film = new this.filmeModel({
+            id: filmeMaiorId[0].id + 1,
+            titulo: filme.titulo,
+            elenco: filme.elenco,
+            diretor: filme.diretor,
+        });
+
+        console.log("filme before save: ", film); // should not have _id yet
+        const savedFilm = await film.save();
+        console.log("saved filme with _id: ", savedFilm._id); // should have _id after saving
     }
 
-    async deletar(_id: string): Promise<(void)> {
-        const resultado = await this.filmeModel.deleteOne({ _id })
+
+    async deletar(id: number): Promise<(void)> {
+        const resultado = await this.filmeModel.deleteOne({ id })
         if (resultado) {
             return
         }

@@ -12,14 +12,17 @@ dotenv.config();
 @injectable()
 class UsuarioRepositorio implements UsuarioRepositorioInterface {
   private userModel: mongoose.Model<UsuarioEntity>
+
   constructor(
     @inject('DBModel') dbModel: DBModel
   ) {
     this.userModel = dbModel.userModel
   }
+
   async buscarTodos(): Promise<(UsuarioEntity | undefined)[]> {
     return await this.userModel.find()
   }
+
   async buscaPorId(id: number): Promise<UsuarioEntity | undefined> {
     const usuario = await this.userModel.findOne({ id })
     if (usuario) {
@@ -27,6 +30,7 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
     }
     return undefined
   }
+
   async criar(usuario: CriarUsuarioDTO): Promise<void> {
     const usuarioMaiorId = await this.userModel.find().sort({ id: -1 }).limit(1);
     const user = new UsuarioEntity(
@@ -36,6 +40,7 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
       usuario.contato
     )
 
+    console.log("user: ", user)
     const userModel = new this.userModel(user)
     await userModel.save();
   }
