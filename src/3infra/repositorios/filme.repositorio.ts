@@ -26,7 +26,7 @@ class FilmeRepositorio implements FilmeRepositorioInterface {
             usuario.filmes.push(movieData);
             await usuario.save();
 
-            return await this.filmeModel.findByIdAndUpdate(
+            return await this.filmeModel.findOneAndUpdate(
                 { titulo: movieData.titulo },
                 { $addToSet: { elenco: userId } },
                 { upsert: true }
