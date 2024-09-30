@@ -5,15 +5,24 @@
 ### Usuários:
 
 1. Buscar todos os usuários (GET)
-   /usuarios
+
+    /usuarios
+
+<br>
 
 2. Buscar usuário por id (GET)
-   /usuarios/:id
+
+    /usuarios/:id
+
+<br>
 
 3. Criar usuário (POST)
-   /usuarios
 
-body:
+    /usuarios
+
+<br>
+
+**Body da requisição:**
 
 ```json
 {
@@ -27,23 +36,37 @@ body:
 }
 ```
 
-Apenas o nome é obrigatório.
+_Apenas o nome é obrigatório._
+
+<br>
 
 4. Atualizar/editar usuário (PATCH)
-   /usuarios/:\_id
+
+    /usuarios/:\_id
+
+<br>
 
 5. Deletar usuário (DELETE)
-   /usuarios/:id
+
+    /usuarios/:id
+
+<br>
 
 ### Filmes:
 
 1. Buscar todos os filmes (GET)
-   /filmes
+
+    /filmes
+
+<br>
 
 2. Criar filme (POST)
-   /filmes
 
-body:
+    /filmes
+
+<br>
+
+**Body da requisição:**
 
 ```json
 {
@@ -53,29 +76,36 @@ body:
 }
 ```
 
-Apenas o título é obrigatório.
+_Apenas o título é obrigatório._
+
+<br>
 
 3. Atualizar/editar filme (PATCH)
    /filmes/:\_id
 
+<br>
+
 4. Deletar filme (DELETE)
    /filmes/:id
+
+<br>
 
 5. Conectar usuários a filmes (PATCH)
    /filmes/adicionar-elenco
 
-body:
+<br>
+
+**Body da requisição:**
 
 ```json
-body:
 {
     "userId": "66f9f2ade73feb45e59294f2",
     "movieData": {
         "titulo": "Titanic"
     }
 }
-
 ```
 
-userId = \_id do usuário
-título = título do filme
+_**userId** = \_id do usuário_
+
+_**título** = título do filme_
