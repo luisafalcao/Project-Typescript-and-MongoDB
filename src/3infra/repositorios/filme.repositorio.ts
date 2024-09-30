@@ -44,10 +44,10 @@ class FilmeRepositorio implements FilmeRepositorioInterface {
 
     async criar(filme: CriarFilmeDTO): Promise<void> {
         const filmeMaiorId = await this.filmeModel.find().sort({ id: -1 }).limit(1);
-        const newId = filmeMaiorId ? filmeMaiorId[0].id : 0
+        const newId = filmeMaiorId.length > 0 ? filmeMaiorId[0].id + 1 : 1;
 
         const film = new this.filmeModel({
-            id: newId + 1,
+            id: newId,
             titulo: filme.titulo,
             elenco: filme.elenco,
             diretor: filme.diretor,
