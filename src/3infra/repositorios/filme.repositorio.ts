@@ -4,8 +4,9 @@ import FilmeEntity from "../../1entidades/filmes.entity";
 import mongoose from "mongoose";
 import DBModel from "../database/db.model";
 import NotFoundException from "../../2dominio/exceptions/mongo-db.exception";
-import { CriarFilmeDTO } from "../../2dominio/dtos/filme.dto";
+import { AtualizarFilmeDTO, CriarFilmeDTO } from "../../2dominio/dtos/filme.dto";
 import { UsuarioEntity } from "../../1entidades/usuarios.entity";
+import { AtualizarUsuarioDTO } from "../../2dominio/dtos/usuario.dto";
 
 @injectable()
 class FilmeRepositorio implements FilmeRepositorioInterface {
@@ -48,11 +49,15 @@ class FilmeRepositorio implements FilmeRepositorioInterface {
             titulo: filme.titulo,
             elenco: filme.elenco,
             diretor: filme.diretor,
+            ano: filme.ano
         });
 
         await film.save();
     }
 
+    async atualizar(id: string, dadosNovos: AtualizarFilmeDTO): Promise<void> {
+        await this.filmeModel.findOneAndUpdate({ _id: id }, dadosNovos, { new: true })
+    }
 
     async deletar(id: number): Promise<(void)> {
         const resultado = await this.filmeModel.deleteOne({ id })

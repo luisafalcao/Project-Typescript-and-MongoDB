@@ -6,6 +6,7 @@ export class FilmeEntity {
     titulo: string;
     elenco?: ObjectId[];
     diretor?: string;
+    ano?: number;
 
     constructor(
         id: number,
@@ -13,11 +14,13 @@ export class FilmeEntity {
         elenco?: ObjectId[],
         diretor?: string,
         _id?: string,
+        ano?: number
     ) {
         this.id = id;
         this.titulo = titulo;
         this.elenco = elenco;
         this.diretor = diretor;
+        this.ano = ano;
         this._id = _id;
     }
 }

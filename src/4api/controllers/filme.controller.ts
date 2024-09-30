@@ -3,7 +3,7 @@ import { body, validationResult } from 'express-validator';
 import { inject, injectable } from 'inversify';
 import asyncHandler from '../utils/async-handler';
 import FilmeServiceInterface from '../../2dominio/interfaces/servicos/filme-servico.interface';
-import { CriarFilmeDTO } from '../../2dominio/dtos/filme.dto';
+import { AtualizarFilmeDTO, CriarFilmeDTO } from '../../2dominio/dtos/filme.dto';
 import FilmeEntity from '../../1entidades/filmes.entity';
 
 @injectable()
@@ -27,6 +27,13 @@ class FilmeController {
           .isString().withMessage('O campo "Diretor" deve ser uma string'),
       ],
       asyncHandler(this.criar.bind(this)));
+    this.router.patch('/:id',
+      [
+        body('id')
+          .exists().withMessage('O campo "Id" é obrigatório')
+          .isString().withMessage('O campo "Id" deve ser uma string')
+      ],
+      asyncHandler(this.atualizar.bind(this)));
     this.router.delete('/:id', asyncHandler(this.deletar.bind(this)));
     this.router.patch('/adicionar-elenco', asyncHandler(this.adicionarElenco.bind(this)))
   }
@@ -82,6 +89,14 @@ class FilmeController {
 
     const filme = await this.filmeService.criar(dadosFilme);
     res.status(201).json(filme);
+  }
+
+  async atualizar(req: Request, res: Response) {
+    const id = req.params.id;
+    const dadosNovos: AtualizarFilmeDTO = req.body;
+
+    await this.filmeService.atualizar(id, dadosNovos);
+    res.json('Filme atualizado com sucesso!');
   }
 
   async deletar(req: Request, res: Response) {

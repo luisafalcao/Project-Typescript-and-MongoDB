@@ -1,5 +1,5 @@
 import { inject, injectable } from "inversify";
-import { CriarFilmeDTO } from "../dtos/filme.dto";
+import { AtualizarFilmeDTO, CriarFilmeDTO } from "../dtos/filme.dto";
 import FilmeServiceInterface from "../interfaces/servicos/filme-servico.interface";
 import FilmeRepositorioInterface from "../interfaces/repositorios/filme-repositorio.interface";
 import FilmeEntity from "../../1entidades/filmes.entity";
@@ -27,6 +27,10 @@ class FilmeService implements FilmeServiceInterface {
     public async criar(filme: CriarFilmeDTO): Promise<(FilmeEntity | undefined)[]> {
         await this.filmeRepositorio.criar(filme);
         return this.buscarTodos()
+    }
+
+    public async atualizar(id: string, filme: AtualizarFilmeDTO): Promise<void> {
+        await this.filmeRepositorio.atualizar(id, filme);
     }
 
     public async deletar(id: number): Promise<void> {
