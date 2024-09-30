@@ -4,12 +4,20 @@ import FilmeServiceInterface from "../interfaces/servicos/filme-servico.interfac
 import FilmeRepositorioInterface from "../interfaces/repositorios/filme-repositorio.interface";
 import FilmeEntity from "../../1entidades/filmes.entity";
 import "reflect-metadata";
+import NotFoundException from "../exceptions/mongo-db.exception";
 
 @injectable()
 class FilmeService implements FilmeServiceInterface {
     private readonly filmeRepositorio: FilmeRepositorioInterface;
     constructor(@inject('FilmeRepositorio') filmeRepositorio: FilmeRepositorioInterface) {
         this.filmeRepositorio = filmeRepositorio;
+    }
+
+    async adicionarElenco(userId: string, movieData: FilmeEntity): Promise<FilmeEntity> {
+        const filme = await this.filmeRepositorio.adicionarElenco(userId, movieData)
+
+        if (!filme) throw new NotFoundException("Usuário ou filme não encontrado")
+        return filme
     }
 
     public async buscarTodos(): Promise<(FilmeEntity | undefined)[]> {

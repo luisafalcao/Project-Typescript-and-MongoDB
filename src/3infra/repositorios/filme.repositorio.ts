@@ -5,19 +5,38 @@ import mongoose from "mongoose";
 import DBModel from "../database/db.model";
 import NotFoundException from "../../2dominio/exceptions/mongo-db.exception";
 import { CriarFilmeDTO } from "../../2dominio/dtos/filme.dto";
+import { UsuarioEntity } from "../../1entidades/usuarios.entity";
 
 @injectable()
 class FilmeRepositorio implements FilmeRepositorioInterface {
     private filmeModel: mongoose.Model<FilmeEntity>
+    private userModel: mongoose.Model<UsuarioEntity>
 
     constructor(
         @inject('DBModel') dbModel: DBModel
     ) {
         this.filmeModel = dbModel.filmeModel
+        this.userModel = dbModel.userModel
+    }
+
+    async adicionarElenco(userId: string, movieData: FilmeEntity): Promise<FilmeEntity | undefined> {
+        const usuario = await this.userModel.findById(userId)
+
+        if (usuario) {
+            usuario.filmes.push(movieData);
+            await usuario.save();
+
+            return await this.filmeModel.findByIdAndUpdate(
+                { titulo: movieData.titulo },
+                { $addToSet: { elenco: userId } },
+                { upsert: true }
+            ) ?? undefined
+        }
+        return undefined
     }
 
     async buscarTodos(): Promise<(FilmeEntity | undefined)[]> {
-        return await this.filmeModel.find()
+        return await this.filmeModel.find().populate('elenco')
     }
 
     async criar(filme: CriarFilmeDTO): Promise<void> {

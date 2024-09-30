@@ -4,6 +4,7 @@ import { inject, injectable } from 'inversify';
 import asyncHandler from '../utils/async-handler';
 import FilmeServiceInterface from '../../2dominio/interfaces/servicos/filme-servico.interface';
 import { CriarFilmeDTO } from '../../2dominio/dtos/filme.dto';
+import FilmeEntity from '../../1entidades/filmes.entity';
 
 @injectable()
 class FilmeController {
@@ -11,7 +12,7 @@ class FilmeController {
 
   constructor(@inject('FilmeService') public filmeService: FilmeServiceInterface,
   ) {
-    this.filmeService = filmeService;
+    // this.filmeService = filmeService;
     this.routes();
   }
 
@@ -27,6 +28,7 @@ class FilmeController {
       ],
       asyncHandler(this.criar.bind(this)));
     this.router.delete('/:id', asyncHandler(this.deletar.bind(this)));
+    this.router.patch('/adicionar-elenco', asyncHandler(this.adicionarElenco.bind(this)))
   }
 
   /**
@@ -57,6 +59,13 @@ class FilmeController {
     *       500:
     *         description: Erro Interno
     */
+
+  async adicionarElenco(req: Request, res: Response) {
+    const body: { userId: string, movieData: FilmeEntity } = req.body
+    const filme = await this.filmeService.adicionarElenco(body.userId, body.movieData)
+    res.json(filme)
+  }
+
   async buscarTodos(req: Request, res: Response): Promise<void> {
     const filmes = await this.filmeService.buscarTodos();
     res.json(filmes);

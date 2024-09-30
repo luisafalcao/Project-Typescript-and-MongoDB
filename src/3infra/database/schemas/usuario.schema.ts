@@ -1,6 +1,7 @@
-import { ObjectId } from "mongodb";
+// import { ObjectId } from "mongodb";
 import { Schema } from "mongoose";
 import { ContatoSchema } from "./contato.schema";
+import { FilmeSchema } from "./filme.schema";
 
 // export type UsuarioSchemaDriver = {
 //     _id?: ObjectId;
@@ -16,4 +17,5 @@ export const UsuarioSchema: Schema = new Schema({
     nome: { type: String, require: true },
     ativo: { type: Boolean, default: false },
     contato: ContatoSchema,
+    filmes: [FilmeSchema]
 });
