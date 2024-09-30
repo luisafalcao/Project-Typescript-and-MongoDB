@@ -42,7 +42,6 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
       usuario.contato
     )
 
-    console.log("user: ", user)
     const userModel = new this.userModel(user)
     await userModel.save();
   }

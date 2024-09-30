@@ -22,16 +22,16 @@ class FilmeRepositorio implements FilmeRepositorioInterface {
 
     async criar(filme: CriarFilmeDTO): Promise<void> {
         const filmeMaiorId = await this.filmeModel.find().sort({ id: -1 }).limit(1);
+        const newId = filmeMaiorId ? filmeMaiorId[0].id : 0
+
         const film = new this.filmeModel({
-            id: filmeMaiorId[0].id + 1,
+            id: newId + 1,
             titulo: filme.titulo,
             elenco: filme.elenco,
             diretor: filme.diretor,
         });
 
-        console.log("filme before save: ", film); // should not have _id yet
-        const savedFilm = await film.save();
-        console.log("saved filme with _id: ", savedFilm._id); // should have _id after saving
+        await film.save();
     }
 
 

@@ -70,7 +70,6 @@ class FilmeController {
     }
 
     const dadosFilme: CriarFilmeDTO = req.body;
-    console.log("dadosFilme: ", dadosFilme)
 
     const filme = await this.filmeService.criar(dadosFilme);
     res.status(201).json(filme);

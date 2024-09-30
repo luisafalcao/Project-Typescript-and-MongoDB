@@ -7,7 +7,8 @@ import "reflect-metadata";
 
 @injectable()
 class FilmeService implements FilmeServiceInterface {
-    constructor(@inject('FilmeRepositorio') private filmeRepositorio: FilmeRepositorioInterface) {
+    private readonly filmeRepositorio: FilmeRepositorioInterface;
+    constructor(@inject('FilmeRepositorio') filmeRepositorio: FilmeRepositorioInterface) {
         this.filmeRepositorio = filmeRepositorio;
     }
 
