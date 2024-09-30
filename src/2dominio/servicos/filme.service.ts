@@ -3,8 +3,8 @@ import { AtualizarFilmeDTO, CriarFilmeDTO } from "../dtos/filme.dto";
 import FilmeServiceInterface from "../interfaces/servicos/filme-servico.interface";
 import FilmeRepositorioInterface from "../interfaces/repositorios/filme-repositorio.interface";
 import FilmeEntity from "../../1entidades/filmes.entity";
-import "reflect-metadata";
 import NotFoundException from "../exceptions/mongo-db.exception";
+import "reflect-metadata";
 
 @injectable()
 class FilmeService implements FilmeServiceInterface {

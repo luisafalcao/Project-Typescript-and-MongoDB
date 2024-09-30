@@ -33,7 +33,7 @@ class UsuarioRepositorio implements UsuarioRepositorioInterface {
 
   async criar(usuario: CriarUsuarioDTO): Promise<void> {
     const usuarioMaiorId = await this.userModel.find().sort({ id: -1 }).limit(1);
-    const newId = usuarioMaiorId ? usuarioMaiorId[0].id : 0
+    const newId = usuarioMaiorId.length > 0 ? usuarioMaiorId[0].id + 1 : 0;
 
     const user = new UsuarioEntity(
       (newId + 1),

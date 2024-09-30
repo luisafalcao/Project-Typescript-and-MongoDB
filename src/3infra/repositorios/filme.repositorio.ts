@@ -23,17 +23,19 @@ class FilmeRepositorio implements FilmeRepositorioInterface {
     async adicionarElenco(userId: string, movieData: FilmeEntity): Promise<FilmeEntity | undefined> {
         const usuario = await this.userModel.findById(userId)
 
-        if (usuario) {
-            usuario.filmes.push(movieData);
-            await usuario.save();
-
-            return await this.filmeModel.findOneAndUpdate(
-                { titulo: movieData.titulo },
-                { $addToSet: { elenco: userId } },
-                { upsert: true }
-            ) ?? undefined
+        if (!usuario) {
+            throw new NotFoundException("Usuário não encontrado")
         }
-        return undefined
+
+        usuario.filmes.push(movieData);
+        await usuario.save();
+
+        return await this.filmeModel.findOneAndUpdate(
+            { titulo: movieData.titulo },
+            { $addToSet: { elenco: userId } },
+            { upsert: true }
+        ) ?? undefined
+
     }
 
     async buscarTodos(): Promise<(FilmeEntity | undefined)[]> {

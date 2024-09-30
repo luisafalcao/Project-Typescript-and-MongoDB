@@ -3,8 +3,8 @@ import ContatoVO from "./vo/contato.vo";
 
 /* eslint-disable no-unused-vars */
 export class UsuarioEntity {
-  _id?: string;
   id: number;
+  _id?: string;
   nome: string;
   ativo?: boolean;
   contato?: ContatoVO;
