@@ -27,6 +27,7 @@ class FilmeController {
           .isString().withMessage('O campo "Diretor" deve ser uma string'),
       ],
       asyncHandler(this.criar.bind(this)));
+    this.router.patch('/adicionar-elenco', asyncHandler(this.adicionarElenco.bind(this)));
     this.router.patch('/:id',
       [
         body('id')
@@ -35,7 +36,6 @@ class FilmeController {
       ],
       asyncHandler(this.atualizar.bind(this)));
     this.router.delete('/:id', asyncHandler(this.deletar.bind(this)));
-    this.router.patch('/adicionar-elenco', asyncHandler(this.adicionarElenco.bind(this)))
   }
 
   /**

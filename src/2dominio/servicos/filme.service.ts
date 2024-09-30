@@ -9,6 +9,7 @@ import "reflect-metadata";
 @injectable()
 class FilmeService implements FilmeServiceInterface {
     private readonly filmeRepositorio: FilmeRepositorioInterface;
+
     constructor(@inject('FilmeRepositorio') filmeRepositorio: FilmeRepositorioInterface) {
         this.filmeRepositorio = filmeRepositorio;
     }
@@ -30,11 +31,19 @@ class FilmeService implements FilmeServiceInterface {
     }
 
     public async atualizar(id: string, filme: AtualizarFilmeDTO): Promise<void> {
-        await this.filmeRepositorio.atualizar(id, filme);
+        try {
+            return await this.filmeRepositorio.atualizar(id, filme);
+        } catch (e) {
+            throw new NotFoundException("Filme não encontrado")
+        }
     }
 
     public async deletar(id: number): Promise<void> {
-        return await this.filmeRepositorio.deletar(id);
+        try {
+            return await this.filmeRepositorio.deletar(id);
+        } catch (e) {
+            throw new NotFoundException("Filme não encontrado")
+        }
     }
 }
 

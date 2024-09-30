@@ -58,7 +58,8 @@ class FilmeRepositorio implements FilmeRepositorioInterface {
     }
 
     async atualizar(id: string, dadosNovos: AtualizarFilmeDTO): Promise<void> {
-        await this.filmeModel.findOneAndUpdate({ _id: id }, dadosNovos, { new: true })
+        const filme = await this.filmeModel.findOneAndUpdate({ _id: id }, dadosNovos, { new: true })
+        if (!filme) throw new NotFoundException("Filme não encontrado")
     }
 
     async deletar(id: number): Promise<(void)> {
